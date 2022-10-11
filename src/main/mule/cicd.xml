@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fc3dda1a-68d1-4c60-bd09-517df0c1aeea" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="cicdFlow" doc:id="c0a9c5b8-5eb3-4622-81e8-19341292a48f" >
+		<http:listener doc:name="Listener" doc:id="6f8b7857-7ff5-423e-9c5b-94d08aeecd83" config-ref="HTTP_Listener_config" path="/fetch"/>
+		<logger level="INFO" doc:name="Logger" doc:id="571b793a-6ed2-4c13-bd74-1ffc0ad21c73" message='#["starting logs"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="ab45a581-1d9d-4d10-94f6-e799c753f082" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"by using jenkins we deployed to cloudhub"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
